@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Fractions
 {
@@ -27,23 +23,39 @@ namespace Fractions
             {
                 int m, n, numbers_nod;
 
-                Console.Write("Введите числитель: ");
-                m = Convert.ToInt32(Console.ReadLine());
-                Console.Write("Введите знаменатель: ");
-                n = Convert.ToInt32(Console.ReadLine());
-                if (n == 0)
+                try
                 {
-                    Console.WriteLine("Знаменатель не может равняться 0!");
-                    continue;
-                }
+                    Console.Write("Введите числитель: ");
+                    m = Convert.ToInt32(Console.ReadLine());
+                    if (m == 0)
+                    {
+                        Console.WriteLine("Результат: 0");
+                        continue;
+                    }
+                    Console.Write("Введите знаменатель: ");
+                    n = Convert.ToInt32(Console.ReadLine());
+                    if (n == 0)
+                    {
+                        Console.WriteLine("Знаменатель не может равняться 0!");
+                        continue;
+                    }
 
-                numbers_nod = nod(Math.Abs(m), Math.Abs(n));
-                if (n < 0)
-                {
-                    m = -m;
-                    n = -n;
+                    numbers_nod = nod(Math.Abs(m), Math.Abs(n));
+                    if (n < 0)
+                    {
+                        m = -m;
+                        n = -n;
+                    }
+                    Console.WriteLine($"Результат: {m / numbers_nod}/{n / numbers_nod}");
                 }
-                Console.WriteLine($"Результат: {m / numbers_nod}/{n / numbers_nod}");
+                catch (FormatException)
+                {
+                    Console.WriteLine("Недопустимый ввод. Проверьте корректность введённого числа.");
+                }
+                catch (OverflowException)
+                {
+                    Console.WriteLine("Число слишком большое или слишком маленькое и не входит в диапазон допустимых значений. Попробуйте число поменьше/побольше.");
+                }
             } while (true);
         }
     }
