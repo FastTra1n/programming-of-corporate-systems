@@ -47,15 +47,37 @@ namespace MaclaurinSeries
             {
                 double x, e, result;
                 int n;
+                try
+                {
+                    Console.Write("Введите значение x: ");
+                    x = Convert.ToDouble(Console.ReadLine());
+                    Console.Write("Введите номер члена ряда, который хотите вычислить (n): ");
+                    n = Convert.ToInt32(Console.ReadLine());
+                    if (n < 0)
+                    {
+                        Console.WriteLine("Номер члена ряда не может быть отрицательным.");
+                        continue;
 
-                Console.Write("Введите значение x: ");
-                x = Convert.ToDouble(Console.ReadLine());
-                Console.Write("Введите номер члена ряда, который хотите вычислить (n): ");
-                n = Convert.ToInt32(Console.ReadLine());
-                Console.Write("Введите точность e (<0.01): ");
-                e = Convert.ToDouble(Console.ReadLine());
-                result = calculateSeriesSum(n, x, e);
-                Console.WriteLine($"Значение {n}-го члена ряда: {result}.");
+                    }
+                    Console.Write("Введите точность e (<0.01): ");
+                    e = Convert.ToDouble(Console.ReadLine());
+                    if (e < 0)
+                    {
+                        Console.WriteLine("Точность не может быть отрицательной.");
+                        continue;
+                    }
+                    result = calculateSeriesSum(n, x, e);
+                    if (result > 1.7 * Math.Pow(10, 308) || result < -1.7 * Math.Pow(10, 308) || double.IsNaN(result))
+                    {
+                        Console.WriteLine("Число слишком большое/маленькое.");
+                        continue;
+                    }
+                    Console.WriteLine($"Значение {n}-го члена ряда: {result}.");
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Введено неверное значение для переменной.");
+                }
             } while (true);
         }
     }
