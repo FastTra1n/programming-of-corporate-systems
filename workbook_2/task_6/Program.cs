@@ -6,10 +6,10 @@ namespace LabExperiment
     {
         static void Main(string[] args)
         {
-            void doExperiment(int bacteria, int mul)
+            void doExperiment(uint bacteria, uint mul)
             {
-                int antibiotic = 10;
-                int hour = 0;
+                uint antibiotic = 10;
+                uint hour = 0;
 
                 while (bacteria > 0 && antibiotic > 0)
                 {
@@ -21,13 +21,24 @@ namespace LabExperiment
                 }
             }
 
-            int n, m;
+            uint n, m;
 
-            Console.Write("Введите количество бактерий: ");
-            n = Convert.ToInt32( Console.ReadLine() );
-            Console.Write("Введите количество антибиотика: ");
-            m = Convert.ToInt32(Console.ReadLine());
-            doExperiment(n, m);
+            try
+            {
+                Console.Write("Введите количество бактерий: ");
+                n = Convert.ToUInt32(Console.ReadLine());
+                Console.Write("Введите количество антибиотика: ");
+                m = Convert.ToUInt32(Console.ReadLine());
+                doExperiment(n, m);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Недопустимый ввод. Перепроверьте введённое число.");
+            }
+            catch (OverflowException)
+            {
+                Console.WriteLine("Введённое число слишком больше/маленькое. Введите число поменьше/побольше.");
+            }
         }
     }
 }
