@@ -18,7 +18,7 @@ namespace GuessNumber
                 mid = (byte) ((left + right) / 2);
                 Console.Write($"Ваше число - {mid}?\nВаш ввод: ");
                 userAnswer = Console.ReadLine();
-                if ((userAnswer == "да") || (userAnswer == "1") || (userAnswer == "y"))
+                if ((userAnswer.ToLower() == "да") || (userAnswer == "1") || (userAnswer.ToLower() == "y"))
                 {
                     Console.WriteLine("Отличная игра!");
                     break;
@@ -28,11 +28,11 @@ namespace GuessNumber
                 {
                     Console.Write($"Хорошо, Ваше число больше {mid}?\nВаш ввод: ");
                     userAnswer = Console.ReadLine();
-                    if ((userAnswer == "да") || (userAnswer == "1") || (userAnswer == "y"))
+                    if ((userAnswer.ToLower() == "да") || (userAnswer == "1") || (userAnswer.ToLower() == "y"))
                     {
                         left = mid;
                     }
-                    else if ((userAnswer == "нет") || (userAnswer == "0") || (userAnswer == "n"))
+                    else if ((userAnswer.ToLower() == "нет") || (userAnswer == "0") || (userAnswer.ToLower() == "n"))
                     {
                         right = mid;
                     }
