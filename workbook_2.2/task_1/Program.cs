@@ -100,14 +100,14 @@ namespace MatrixCalculator
                 Console.WriteLine();
             }
 
-            void mulMatrixes(double[,] matrix1, double[,] matrix2)
+            double[,] mulMatrixes(double[,] matrix1, double[,] matrix2)
             {
                 double[,] result = new double[matrix1.GetLength(0), matrix2.GetLength(1)];
 
                 if (matrix1.GetLength(1) != matrix2.GetLength(0))
                 {
                     Console.WriteLine("Матрицы невозможно перемножить: число столбцов первой матрицы не равно числу строк второй.\n");
-                    return;
+                    return result;
                 }
 
                 Console.WriteLine("Результатом перемножения является матрица следующего вида:");
@@ -121,11 +121,13 @@ namespace MatrixCalculator
                         {
                             interim_sum += matrix1[i, k] * matrix2[k, j];
                         }
+                        result[i, j] = interim_sum;
                         Console.Write($"{interim_sum} ");
                     }
                     Console.WriteLine();
                 }
                 Console.WriteLine();
+                return result;
             }
 
             void calculateDeterminant(double[,] matrix)
@@ -171,6 +173,68 @@ namespace MatrixCalculator
                     j++;
                 }
                 return minor;
+            }
+
+            double[,] calculateInvMatrix(double[,] matrix)
+            {
+                double det = determinant(matrix);
+                if (det == 0)
+                {
+                    Console.WriteLine("Обратная матрица не существует, так как детерминант равен нулю.");
+                };
+                
+                double[,] invMatrix = new double[matrix.GetLength(0), matrix.GetLength(1)];
+                for (int i = 0; i < matrix.GetLength(0); i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(1); j++)
+                    {
+                        double[,] minor = getMinor(matrix, i, j);
+                        invMatrix[j, i] = Math.Pow(-1, i + j) * determinant(minor) / det;
+                    }
+                }
+                return invMatrix;
+            }
+
+            //double[,] algebraicExtension(double[,] matrix)
+            //{
+            //    double[,] algMatrix = new double[matrix.GetLength(0), matrix.GetLength(1)];
+            //    for (int i = 0; i < algMatrix.GetLength(0); i++)
+            //    {
+            //        for (int j = 0; j < algMatrix.GetLength(1); j++)
+            //        {
+            //            matrix[i, j] = Math.Pow(-1, i + j) * matrix[i, j];
+            //        }
+            //    }
+            //    return algMatrix;
+            //}
+
+            double[,] transposeMatrix(double[,] matrix)
+            {
+                double[,] transpMatrix = new double[matrix.GetLength(1), matrix.GetLength(0)];
+                for (int i = 0; i < matrix.GetLength(1); i++)
+                {
+                    for (int j = 0; j < matrix.GetLength(0); j++)
+                    {
+                        transpMatrix[i, j] = matrix[j, i];
+                    }
+                }
+                return transpMatrix;
+            }
+
+            void solveSystem(double[,] A, double[,] B)
+            {
+                if (B.GetLength(1) != 1 || B.GetLength(0) != A.GetLength(0))
+                {
+                    Console.WriteLine("Данная система не имеет однозначного решения: матрица B должна быть вектором-столбцом такой же высоты, как A.");
+                }
+
+                double[,] invA = calculateInvMatrix(A);
+                double[,] solvedSystem = mulMatrixes(invA, B);
+                Console.WriteLine("Корнями системы уравнений являются:");
+                for (int i = 0; i < solvedSystem.GetLength(0); i++)
+                {
+                    Console.WriteLine($"x{i+1} = {solvedSystem[i, 0]}");
+                }
             }
 
             char option;
@@ -264,17 +328,17 @@ namespace MatrixCalculator
                             break;
 
                         case '6':
-                            char choice;
+                            char detChoice;
 
                             Console.WriteLine("Выберите первую (1) или вторую (2) матрицу для вычисления детерминанта.");
                             Console.Write("Ваш выбор: ");
-                            choice = Convert.ToChar(Console.ReadLine());
+                            detChoice = Convert.ToChar(Console.ReadLine());
 
-                            if (choice == '1')
+                            if (detChoice == '1')
                             {
                                 calculateDeterminant(m1);
                             }
-                            else if (choice == '2')
+                            else if (detChoice == '2')
                             {
                                 calculateDeterminant(m2);
                             }
@@ -282,6 +346,88 @@ namespace MatrixCalculator
                             {
                                 Console.WriteLine("Неизвестный номер матрицы. Выберите первую (1) или вторую (2) матрицу.");
                             }
+                            break;
+
+                        case '7':
+                            char invChoice;
+
+                            Console.WriteLine("Выберите первую (1) или вторую (2) матрицу для вычисления детерминанта.");
+                            Console.Write("Ваш выбор: ");
+                            invChoice = Convert.ToChar(Console.ReadLine());
+
+                            if (invChoice == '1')
+                            {
+                                double[,] inv = calculateInvMatrix(m1);
+                                Console.WriteLine("Обратная матрица вычислена.\nЗначение в ячейках обратной матрицы:");
+                                for (int i = 0; i < inv.GetLength(0); i++)
+                                {
+                                    for (int j = 0; j < inv.GetLength(1); j++)
+                                    {
+                                        Console.Write($"{inv[i, j]} ");
+                                    }
+                                    Console.WriteLine();
+                                }
+                            }
+                            else if (invChoice == '2')
+                            {
+                                double[,] inv = calculateInvMatrix(m2);
+                                Console.WriteLine("Обратная матрица вычислена.\nЗначение в ячейках обратной матрицы:");
+                                for (int i = 0; i < inv.GetLength(0); i++)
+                                {
+                                    for (int j = 0; j < inv.GetLength(1); j++)
+                                    {
+                                        Console.Write($"{inv[i, j]} ");
+                                    }
+                                    Console.WriteLine();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Неизвестный номер матрицы. Выберите первую (1) или вторую (2) матрицу.");
+                            }
+                            break;
+
+                        case '8':
+                            char transpChoice;
+
+                            Console.WriteLine("Выберите первую (1) или вторую (2) матрицу для транспонирования.");
+                            Console.Write("Ваш выбор: ");
+                            transpChoice = Convert.ToChar(Console.ReadLine());
+
+                            if (transpChoice == '1')
+                            {
+                                double[,] transp = transposeMatrix(m1);
+                                Console.WriteLine("Матрица успешно транспонирована.\nЗначение в ячейках транспонированной матрицы:");
+                                for (int i = 0; i < transp.GetLength(0); i++)
+                                {
+                                    for (int j = 0; j < transp.GetLength(1); j++)
+                                    {
+                                        Console.Write($"{transp[i, j]} ");
+                                    }
+                                    Console.WriteLine();
+                                }
+                            }
+                            else if (transpChoice == '2')
+                            {
+                                double[,] transp = transposeMatrix(m2);
+                                Console.WriteLine("Матрица успешно транспонирована.\nЗначение в ячейках транспонированной матрицы:");
+                                for (int i = 0; i < transp.GetLength(0); i++)
+                                {
+                                    for (int j = 0; j < transp.GetLength(1); j++)
+                                    {
+                                        Console.Write($"{transp[i, j]} ");
+                                    }
+                                    Console.WriteLine();
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Неизвестный номер матрицы. Выберите первую (1) или вторую (2) матрицу.");
+                            }
+                            break;
+
+                        case '9':
+                            solveSystem(m1, m2);
                             break;
 
                         default:
