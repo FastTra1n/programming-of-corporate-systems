@@ -46,7 +46,14 @@ namespace Fractions
                         m = -m;
                         n = -n;
                     }
-                    Console.WriteLine($"Результат: {m / numbers_nod}/{n / numbers_nod}");
+                    if (n / numbers_nod == 1)
+                    {
+                        Console.WriteLine($"Результат: {m / numbers_nod}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Результат: {m / numbers_nod}/{n / numbers_nod}");
+                    }
                 }
                 catch (FormatException)
                 {
