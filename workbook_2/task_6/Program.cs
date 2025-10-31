@@ -14,7 +14,14 @@ namespace LabExperiment
                 while (bacteria > 0 && antibiotic > 0)
                 {
                     bacteria *= 2;
-                    bacteria -= antibiotic * mul;
+                    if (bacteria < antibiotic * mul)
+                    {
+                        bacteria = 0;
+                    }
+                    else
+                    {
+                        bacteria -= antibiotic * mul;
+                    }
                     antibiotic -= 1;
                     hour += 1;
                     Console.WriteLine($"После {hour} часа бактерий осталось: {bacteria}");
