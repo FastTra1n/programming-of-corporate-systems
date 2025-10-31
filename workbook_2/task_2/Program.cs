@@ -7,6 +7,7 @@ namespace LuckyTicket
         static void Main(string[] args)
         {
             do {
+                string userInput;
                 uint number;
                 ushort firstPart, secondPart;
                 byte firstSum, secondSum;
@@ -14,8 +15,9 @@ namespace LuckyTicket
                 try
                 {
                     Console.Write("Введите номер билета: ");
-                    number = Convert.ToUInt32(Console.ReadLine());
-                    if (number > 999999 || number < 100000)
+                    userInput = Console.ReadLine();
+                    number = Convert.ToUInt32(userInput);
+                    if (userInput.Length != 6 || number > 999999 || number < 100000)
                     {
                         Console.WriteLine("Число содержит более/менее 6 знаков. Введите целое 6-значное число.");
                         continue;
