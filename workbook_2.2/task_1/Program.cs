@@ -51,7 +51,7 @@ namespace MatrixCalculator
                 var random = new Random();
                 int a, b;
 
-                Console.WriteLine("Введите диапазон случайных значений [a, b] для первой матрицы.");
+                Console.WriteLine("Введите диапазон случайных значений [a, b] для первой матрицы (будут сгенерированы целые числа).");
                 Console.Write("a: ");
                 a = Convert.ToInt32(Console.ReadLine());
                 Console.Write("b: ");
@@ -180,7 +180,8 @@ namespace MatrixCalculator
                 double det = determinant(matrix);
                 if (det == 0)
                 {
-                    Console.WriteLine("Обратная матрица не существует, так как детерминант равен нулю.");
+                    Console.WriteLine("Обратная матрица не существует, так как детерминант равен нулю.\n");
+                    return new double[0, 0];
                 };
                 
                 double[,] invMatrix = new double[matrix.GetLength(0), matrix.GetLength(1)];
@@ -226,6 +227,7 @@ namespace MatrixCalculator
                 if (B.GetLength(1) != 1 || B.GetLength(0) != A.GetLength(0))
                 {
                     Console.WriteLine("Данная система не имеет однозначного решения: матрица B должна быть вектором-столбцом такой же высоты, как A.");
+                    return;
                 }
 
                 double[,] invA = calculateInvMatrix(A);
@@ -276,6 +278,12 @@ namespace MatrixCalculator
                             break;
                         
                         case '2':
+                            if (m1.Length == 0 && m2.Length == 0)
+                            {
+                                Console.WriteLine("Необходимо создать матрицы перед их ручным заполнением.\n");
+                                break;
+                            }
+
                             fillMatrixesYsf(ref m1, ref m2);
                             Console.WriteLine("Матрицы успешно заполнены.\nЗначение в ячейках первой матрицы:");
                             for (int i = 0; i < m1.GetLength(0); i++)
@@ -298,6 +306,12 @@ namespace MatrixCalculator
                             break;
 
                         case '3':
+                            if (m1.Length == 0 && m2.Length == 0)
+                            {
+                                Console.WriteLine("Необходимо создать матрицы перед заполнением их случайными значениями.\n");
+                                break;
+                            }
+
                             fillMatrixesRnd(ref m1, ref m2);
                             Console.WriteLine("Матрицы успешно заполнены.\nЗначение в ячейках первой матрицы:");
                             for (int i = 0; i < m1.GetLength(0); i++)
@@ -320,14 +334,32 @@ namespace MatrixCalculator
                             break;
 
                         case '4':
+                            if (m1.Length == 0 && m2.Length == 0)
+                            {
+                                Console.WriteLine("Необходимо создать матрицы перед тем, как сложить их.\n");
+                                break;
+                            }
+
                             addMatrixes(m1, m2);
                             break;
 
                         case '5':
+                            if (m1.Length == 0 && m2.Length == 0)
+                            {
+                                Console.WriteLine("Необходимо создать матрицы перед тем, как перемножить их.\n");
+                                break;
+                            }
+
                             mulMatrixes(m1, m2);
                             break;
 
                         case '6':
+                            if (m1.Length == 0 && m2.Length == 0)
+                            {
+                                Console.WriteLine("Необходимо создать матрицы перед тем, как вычислить их детерминант.\n");
+                                break;
+                            }
+
                             char detChoice;
 
                             Console.WriteLine("Выберите первую (1) или вторую (2) матрицу для вычисления детерминанта.");
@@ -344,20 +376,28 @@ namespace MatrixCalculator
                             }
                             else
                             {
-                                Console.WriteLine("Неизвестный номер матрицы. Выберите первую (1) или вторую (2) матрицу.");
+                                Console.WriteLine("Неизвестный номер матрицы. Выберите первую (1) или вторую (2) матрицу.\n");
                             }
                             break;
 
                         case '7':
+                            if (m1.Length == 0 && m2.Length == 0)
+                            {
+                                Console.WriteLine("Необходимо создать матрицы перед тем, как найти обратную.\n");
+                                break;
+                            }
+
                             char invChoice;
 
-                            Console.WriteLine("Выберите первую (1) или вторую (2) матрицу для вычисления детерминанта.");
+                            Console.WriteLine("Выберите первую (1) или вторую (2) матрицу для вычисления обратной матрицы.");
                             Console.Write("Ваш выбор: ");
                             invChoice = Convert.ToChar(Console.ReadLine());
 
                             if (invChoice == '1')
                             {
                                 double[,] inv = calculateInvMatrix(m1);
+                                if (inv.Length == 0) break;
+
                                 Console.WriteLine("Обратная матрица вычислена.\nЗначение в ячейках обратной матрицы:");
                                 for (int i = 0; i < inv.GetLength(0); i++)
                                 {
@@ -371,6 +411,8 @@ namespace MatrixCalculator
                             else if (invChoice == '2')
                             {
                                 double[,] inv = calculateInvMatrix(m2);
+                                if (inv.Length == 0) break;
+
                                 Console.WriteLine("Обратная матрица вычислена.\nЗначение в ячейках обратной матрицы:");
                                 for (int i = 0; i < inv.GetLength(0); i++)
                                 {
@@ -383,11 +425,17 @@ namespace MatrixCalculator
                             }
                             else
                             {
-                                Console.WriteLine("Неизвестный номер матрицы. Выберите первую (1) или вторую (2) матрицу.");
+                                Console.WriteLine("Неизвестный номер матрицы. Выберите первую (1) или вторую (2) матрицу.\n");
                             }
                             break;
 
                         case '8':
+                            if (m1.Length == 0 && m2.Length == 0)
+                            {
+                                Console.WriteLine("Необходимо создать матрицы перед тем, как транспонировать их.\n");
+                                break;
+                            }
+
                             char transpChoice;
 
                             Console.WriteLine("Выберите первую (1) или вторую (2) матрицу для транспонирования.");
@@ -422,11 +470,17 @@ namespace MatrixCalculator
                             }
                             else
                             {
-                                Console.WriteLine("Неизвестный номер матрицы. Выберите первую (1) или вторую (2) матрицу.");
+                                Console.WriteLine("Неизвестный номер матрицы. Выберите первую (1) или вторую (2) матрицу.\n");
                             }
                             break;
 
                         case '9':
+                            if (m1.Length == 0 && m2.Length == 0)
+                            {
+                                Console.WriteLine("Необходимо создать матрицы перед тем, как решить систему уравнений.\n");
+                                break;
+                            }
+
                             solveSystem(m1, m2);
                             break;
 
@@ -437,7 +491,11 @@ namespace MatrixCalculator
                 }
                 catch (FormatException)
                 {
-                    Console.WriteLine("Недопустимый ввод. Проверьте корректность введённого Вами значения.");
+                    Console.WriteLine("Недопустимый ввод. Проверьте корректность введённого Вами значения.\n");
+                }
+                catch (OverflowException)
+                {
+                    Console.WriteLine("Недопустимый ввод. Введённое или полученное число слишком большое/маленькое.\n");
                 }
             } while (isExit);
         }
