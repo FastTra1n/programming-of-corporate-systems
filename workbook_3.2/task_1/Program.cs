@@ -281,7 +281,10 @@ namespace BookingSystem
             phone = Console.ReadLine() ?? "";
             if (phone.Length != 4) throw new ArgumentException("Введите последние 4 цифры телефона клиента.");
 
-            Booking? filteredBooking = bookings.Find(b => b.name == name && b.phone.EndsWith(phone));
+            List<Booking>? filteredBooking = bookings.FindAll(b =>
+                (b.name == name) &&
+                b.phone.EndsWith(phone)
+            );
 
             if (filteredBooking == null)
             {
@@ -289,8 +292,12 @@ namespace BookingSystem
             }
             else
             {
-                Console.WriteLine($"Найдено бронирование на имя {filteredBooking.name}:");
-                filteredBooking.displayBookingInfo();
+                Console.WriteLine($"Найдено {filteredBooking.Count} бронирований:");
+                foreach (Booking booking in filteredBooking)
+                {
+                    booking.displayBookingInfo();
+                    Console.WriteLine("\n");
+                }
             }
         }
     }
